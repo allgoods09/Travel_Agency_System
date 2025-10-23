@@ -18,9 +18,10 @@ class PackageFactory extends Factory
     {
 
         $destination = ['Tubigon', 'Calape', 'Clarin', 'Loon', 'Antequera', 'Cortes', 'Danao', 'Inabanga', 'Panglao', 'Tagbilaran'];
+        $name = ['Island Adventure', 'Mountain Escape', 'Cultural Tour', 'Beach Getaway', 'Historical Journey', 'Nature Exploration', 'City Highlights', 'Foodie Experience', 'Wildlife Safari', 'Relaxation Retreat'];
 
         return [
-            'name' => $this->faker->words(3, true),
+            'name' => $this->faker->randomElement($name),
             'destination' => $this->faker->randomElement($destination),
             'price' => $this->faker->numberBetween(1000, 10000),
             'duration_days' => $this->faker->numberBetween(1, 30),
