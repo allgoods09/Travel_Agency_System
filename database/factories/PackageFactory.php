@@ -17,8 +17,70 @@ class PackageFactory extends Factory
     public function definition(): array
     {
 
-        $destination = ['Tubigon', 'Calape', 'Clarin', 'Loon', 'Antequera', 'Cortes', 'Danao', 'Inabanga', 'Panglao', 'Tagbilaran'];
-        $name = ['Island Adventure', 'Mountain Escape', 'Cultural Tour', 'Beach Getaway', 'Historical Journey', 'Nature Exploration', 'City Highlights', 'Foodie Experience', 'Wildlife Safari', 'Relaxation Retreat'];
+        $destination = [
+            "Tagbilaran City",
+            "Panglao Beach",
+            "Chocolate Hills",
+            "Loboc River",
+            "Anda Beach",
+            "Baclayon Church",
+            "Tarsier Sanctuary",
+            "Danao Adventure Park",
+            "Hinagdanan Cave",
+            "Bilar Man-Made Forest",
+            "Alona Beach",
+            "Dimiao Twin Falls",
+            "Mag-Aso Falls",
+            "Cabagnow Cave Pool",
+            "Balicasag Island",
+            "Virgin Island Sandbar",
+            "Mahogany Forest",
+            "Can-umantad Falls",
+            "Dauis Church",
+            "Sevilla Hanging Bridge",
+            "Sagbayan Peak",
+            "Candaigan Cliff View",
+            "Loon Coral Garden",
+            "Alicia Panoramic Park",
+            "Candijay Rice Terraces",
+            "Jagna Port",
+            "Garcia Hernandez Hills",
+            "Catigbian Caves",
+            "Tubigon Market",
+            "Inabanga Mangrove Forest"
+        ];
+        $name = [
+            'Island Adventure',
+            'Mountain Escape',
+            'Cultural Immersion',
+            'Beach Picnic',
+            'Historical Journey',
+            'Nature Exploration',
+            'City Highlights',
+            'Foodie Experience',
+            'Wildlife Safari',
+            'Relaxation Retreat',
+            'Sunset Cruise',
+            'Snorkel & Swim',
+            'Hiking Expedition',
+            'Kayak & Paddle',
+            'Wellness Escape',
+            'Photography Tour',
+            'Romantic Getaway',
+            'Family Fun Package',
+            'Eco-Tour',
+            'Adventure Combo',
+            'Diving Intro',
+            'Sunrise Trek',
+            'Local Markets Tour',
+            'Heritage Walk',
+            'River Cruise Experience',
+            'Offroad Adventure',
+            'Birdwatching Trip',
+            'Island Picnic',
+            'Spa & Chill',
+            'Cultural Workshops'
+        ];
 
         return [
             'name' => $this->faker->randomElement($name),
