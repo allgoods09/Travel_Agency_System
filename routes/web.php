@@ -10,7 +10,10 @@ Route::get('/', function () {
 })->name('/');
 
 Route::get('/packages', [PackageController::class, 'index'])->name('packages.index');
+Route::resource('packages', PackageController::class);
 
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+Route::resource('bookings', BookingController::class);
 
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::resource('customers', CustomerController::class);

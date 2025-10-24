@@ -18,6 +18,6 @@ class Package extends Model
 
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'package_id');
+        return $this->hasMany(Booking::class);
     }
 }

@@ -21,12 +21,12 @@
                         <th>Package Name</th>
                         <th>Booking Date</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($bookings as $booking)
                         @php
-                            // Determine background color based on status
                             $statusColors = [
                                 'cancelled' => 'bg-danger text-white',
                                 'pending' => 'bg-warning text-dark',
@@ -44,6 +44,24 @@
                             <td class="{{ $statusClass }}">
                                 {{ ucfirst($booking->status) }}
                             </td>
+                            <td>
+                                <button 
+                                    class="btn btn-sm btn-warning me-2"
+                                    onclick="openEditModal({{ $booking->id }}, '{{ $booking->booking_date }}', '{{ $booking->status }}')">
+                                    Edit
+                                </button>
+
+                                <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this booking?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -54,4 +72,87 @@
             {{ $bookings->links() }}
         </div>
     @endif
+
+    <!-- Edit Booking Modal -->
+    <div class="modal fade" id="editBookingModal" tabindex="-1" aria-labelledby="editBookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="editBookingModalLabel">Edit Booking</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editBookingForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Booking Date</label>
+                            <input type="date" name="booking_date" id="editBookingDate" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" id="editStatus" class="form-select" required>
+                                <!-- Dynamic placeholder will be inserted by JS -->
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal(id, bookingDate, status) {
+            const modal = new bootstrap.Modal(document.getElementById('editBookingModal'));
+            document.getElementById('editBookingDate').value = bookingDate;
+
+            const statusSelect = document.getElementById('editStatus');
+
+            // Automatically select the current status
+            Array.from(statusSelect.options).forEach(option => {
+                option.selected = option.value.toLowerCase() === status.toLowerCase();
+            });
+
+            // Update form action dynamically
+            document.getElementById('editBookingForm').action = `/bookings/${id}`;
+
+            modal.show();
+        }
+
+    </script>
+
+    <style>
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            color: #212529;
+            transition: all 0.3s ease;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+            transform: scale(1.05);
+        }
+        .btn-danger {
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: scale(1.05);
+        }
+        .modal-content {
+            border-radius: 1rem;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        /* keep colored cell readable */
+        td.bg-warning, td.bg-success, td.bg-danger {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
 @endsection
