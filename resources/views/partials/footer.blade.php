@@ -5,7 +5,7 @@
         <div class="social-icons mt-3">
             <a href="https://www.facebook.com/vince.escartin.1" target="_blank" class="text-white me-3"><i class="bi bi-facebook"></i></a>
             <a href="https://www.instagram.com/vnsx_car10/?igsh=MWYzb2Z1enIwN2FrZQ%3D%3D#" target="_blank" class="text-white me-3"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+            <a href="https://github.com/allgoods09/Travel_Agency_System/" target="_blank" class="text-white"><i class="bi bi-github"></i></a>
         </div>
     </div>
 </footer>

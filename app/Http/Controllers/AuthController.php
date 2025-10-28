@@ -39,7 +39,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->intended('/')->with('success', 'Welcome back, ' . $user->name . '!');
+        return redirect('/')->with('success', 'Welcome back, ' . $user->name . '!');
     }
 
     // Show register form
