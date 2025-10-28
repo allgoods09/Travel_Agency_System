@@ -2,40 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Booking;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Models\Customer;
+use App\Models\Package;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $bookings = Booking::with(['package', 'customer'])->paginate(10);
-        
+        $perPage = 10; // your pagination limit
+        $bookings = Booking::orderBy('id', 'asc')->paginate($perPage);
+
+        // If the current page has no rows, redirect to previous page (if not page 1)
+        if ($bookings->isEmpty() && $request->page > 1) {
+            $prevPage = $request->page - 1;
+            return redirect()->route('bookings.index', ['page' => $prevPage]);
+        }
+
         return view('bookings.index', compact('bookings'));
     }
 
-    public function update(Request $request, $id)
-{
-    $request->validate([
-        'booking_date' => 'required|date',
-        'status' => 'required|string',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'customer_id' => [
+                'required',
+                'integer',
+                Rule::exists('customers', 'id')->where(function ($query) {
+                    $query->whereNotNull('id'); // optional, just ensures row exists
+                }),
+            ],
+            'package_id' => [
+                'required',
+                'integer',
+                Rule::exists('packages', 'id')->where(function ($query) {
+                    $query->whereNotNull('id');
+                }),
+            ],
+            'booking_date' => 'required|date',
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
 
-    $booking = Booking::findOrFail($id);
-    $booking->update([
-        'booking_date' => $request->booking_date,
-        'status' => $request->status,
-    ]);
+        Booking::create($request->only(['customer_id', 'package_id', 'booking_date', 'status']));
 
-    return redirect()->route('bookings.index')->with('success', 'Booking updated successfully.');
-}
+        return redirect()->back()->with('success', 'Booking added successfully!');
+    }
 
-public function destroy($id)
-{
-    $booking = Booking::findOrFail($id);
-    $booking->delete();
+    public function update(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'booking_date' => 'required|date',
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
 
-    return redirect()->route('bookings.index')->with('success', 'Booking deleted successfully.');
-}
+        $booking->update($request->only(['booking_date', 'status']));
 
+        return redirect()->back()->with('success', 'Booking updated successfully!');
+    }
+
+    public function destroy(Booking $booking)
+    {
+        $booking->delete();
+        return redirect()->back()->with('success', 'Booking deleted successfully!');
+    }
 }

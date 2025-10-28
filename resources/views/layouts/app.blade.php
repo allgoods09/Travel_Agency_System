@@ -20,10 +20,16 @@
             min-height: 100vh;
             background: url('{{ asset('images/travelbohol.jpg') }}') no-repeat center center fixed;
             background-size: cover;
-            background-color: #000; /* optional if your bg is dark */
+            background-color: #000;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+            padding-top: 70px;
         }
         main {
             flex: 1;
+        }
+        html {
+            overflow-y: scroll;
         }
     </style>
 </head>
@@ -38,6 +44,15 @@
     @include('partials.footer')
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.body.style.opacity = 1;
+        });
+
+        window.addEventListener("beforeunload", function () {
+            document.body.style.opacity = 0;
+        });
+    </script>
 </body>
 <style>
 .page-header {

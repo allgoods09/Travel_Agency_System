@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Travel Bohol - Home')
 
 @section('content')
 <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
@@ -8,7 +8,7 @@
 
         <div class="carousel-item active">
             <img src="{{ asset('images/banners/loboc.jpg') }}" class="d-block w-100 banner-img" alt="Banner 1">
-            <div class="carousel-caption d-none d-md-block">
+            <div class="carousel-caption d-none d-md-block custom-caption">
                 <h3>Discover Amazing Packages</h3>
                 <p>Travel with comfort and style.</p>
             </div>
@@ -16,7 +16,7 @@
 
         <div class="carousel-item">
             <img src="{{ asset('images/banners/manmade.jpg') }}" class="d-block w-100 banner-img" alt="Banner 2">
-            <div class="carousel-caption d-none d-md-block">
+            <div class="carousel-caption d-none d-md-block custom-caption">
                 <h3>Adventure Awaits</h3>
                 <p>Explore destinations beyond your imagination.</p>
             </div>
@@ -24,7 +24,7 @@
 
         <div class="carousel-item">
             <img src="{{ asset('images/banners/alona.jpg') }}" class="d-block w-100 banner-img" alt="Banner 3">
-            <div class="carousel-caption d-none d-md-block">
+            <div class="carousel-caption d-none d-md-block custom-caption">
                 <h3>Book Your Dream Vacation</h3>
                 <p>Exclusive deals and offers available now.</p>
             </div>
@@ -32,7 +32,7 @@
 
         <div class="carousel-item">
             <img src="{{ asset('images/banners/campsite.jpg') }}" class="d-block w-100 banner-img" alt="Banner 4">
-            <div class="carousel-caption d-none d-md-block">
+            <div class="carousel-caption d-none d-md-block custom-caption">
                 <h3>Relax and Recharge</h3>
                 <p>Your next getaway starts here.</p>
             </div>
@@ -51,12 +51,6 @@
     </button>
 </div>
 
-{{-- Optional content below the banner --}}
-<div class="mt-5 text-center text-white">
-    
-</div>
-
-{{-- Custom directional fade+slide effect --}}
 <style>
 .banner-img {
     width: 100%;
@@ -137,6 +131,41 @@
         -1px  1px 2px rgba(0, 0, 0, 0.9),
          1px  1px 2px rgba(0, 0, 0, 0.9);
     color: #fff;
+}
+
+.custom-caption {
+    border-radius: 15px;
+    padding: 20px 35px;
+    box-shadow: none; /* removed shadow since no bg */
+    animation: fadeUp 1s ease-in-out;
+}
+
+.custom-caption h3 {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    letter-spacing: 1px;
+}
+
+.custom-caption p {
+    color: #f8f9fa;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 10px;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+}
+
+/* Smooth fade + upward animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 </style>

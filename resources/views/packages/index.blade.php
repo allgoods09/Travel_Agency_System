@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Packages')
+@section('title', 'Travel Bohol - Packages')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="page-header">
             <h1 class="h3 mb-0">🎒 Packages List</h1>
         </div>
+        <a href="#" class="btn btn-primary mb-3" onclick="openAddPackageModal()">Add Package</a>
     </div>
 
     @if($packages->isEmpty())
@@ -70,7 +71,6 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            {{-- NOTE: action is set dynamically in JS --}}
             <form id="editPackageForm" method="POST">
                 @csrf
                 @method('PUT')
@@ -106,8 +106,43 @@
     </div>
 </div>
 
+<div class="modal fade" id="addPackageModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Add Package</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="{{ route('packages.store') }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Name</label>
+            <input type="text" name="name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Destination</label>
+            <input type="text" name="destination" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Price</label>
+            <input type="number" step="0.01" name="price" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Duration Days</label>
+            <input type="number" name="duration_days" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @php
-    // safe base URL for packages (works even if app isn't at web root)
     $packagesBaseUrl = url('packages');
 @endphp
 
@@ -122,10 +157,13 @@
         document.getElementById('editDestination').value = destination ?? '';
         document.getElementById('editPrice').value = price ?? '';
         document.getElementById('editDays').value = days ?? '';
-
-        // set form action to e.g. https://yourapp.test/packages/3
         document.getElementById('editPackageForm').action = `${packagesBase}/${id}`;
 
+        modal.show();
+    }
+
+    function openAddPackageModal() {
+        const modal = new bootstrap.Modal(document.getElementById('addPackageModal'));
         modal.show();
     }
 </script>

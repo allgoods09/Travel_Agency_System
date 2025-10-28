@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Bookings')
+@section('title', 'Travel Bohol - Bookings')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="page-header">
             <h1 class="h3 mb-0">📖 Booking List</h1>
         </div>
+        <a href="#" class="btn btn-primary mb-3" onclick="openAddBookingModal()">Add Booking</a>
     </div>
 
     @if($bookings->isEmpty())
@@ -92,7 +93,6 @@
                         <div class="mb-3">
                             <label class="form-label">Status</label>
                             <select name="status" id="editStatus" class="form-select" required>
-                                <!-- Dynamic placeholder will be inserted by JS -->
                                 <option value="pending">Pending</option>
                                 <option value="confirmed">Confirmed</option>
                                 <option value="cancelled">Cancelled</option>
@@ -107,6 +107,47 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Booking Modal -->
+<div class="modal fade" id="addBookingModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Add Booking</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="{{ route('bookings.store') }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Customer ID</label>
+            <input type="number" name="customer_id" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Package ID</label>
+            <input type="number" name="package_id" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Booking Date</label>
+            <input type="date" name="booking_date" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Status</label>
+            <select name="status" class="form-select" required>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
     <script>
         function openEditModal(id, bookingDate, status) {
@@ -123,6 +164,11 @@
             // Update form action dynamically
             document.getElementById('editBookingForm').action = `/bookings/${id}`;
 
+            modal.show();
+        }
+
+        function openAddBookingModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addBookingModal'));
             modal.show();
         }
 

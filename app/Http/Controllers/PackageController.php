@@ -21,7 +21,7 @@ class PackageController extends Controller
      */
     public function create()
     {
-        return view('packages.create');
+        // Return the view to create a new package
     }
 
     /**
@@ -46,7 +46,7 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        return view('packages.edit', compact('package'));
+        // Return the view to edit the package
     }
 
     /**

@@ -11,8 +11,14 @@ class CustomerController extends Controller
      * Display a listing of the customers.
      */
     public function index()
-    {
-        $customers = Customer::paginate(10);
+    {   
+        $perPage = 10; // your pagination limit
+        $customers = Customer::orderBy('id', 'asc')->paginate($perPage);
+
+        if ($customers->isEmpty() && $request->page > 1) {
+            $prevPage = $request->page - 1;
+            return redirect()->route('customers.index', ['page' => $prevPage]);
+        }
         return view('customers.index', compact('customers'));
     }
 
@@ -21,7 +27,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customers.create');
+        // Return the view to create a new customer
     }
 
     /**
@@ -38,6 +44,8 @@ class CustomerController extends Controller
         Customer::create($validated);
 
         return redirect()->route('customers.index')->with('success', 'Customer created successfully!');
+        Customer::create($request->only(['name','contact_number','email']));
+        return redirect()->back()->with('success', 'Customer added successfully!');
     }
 
     /**
@@ -45,7 +53,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        return view('customers.edit', compact('customer'));
+        // Return the view to edit the customer
     }
 
     /**
@@ -73,4 +81,5 @@ class CustomerController extends Controller
 
         return redirect()->route('customers.index')->with('success', 'Customer deleted successfully!');
     }
+    
 }
