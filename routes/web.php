@@ -10,10 +10,11 @@ Route::get('/', function () {
     return view('home');
 })->name('/');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/packages', [PackageController::class, 'index'])->name('packages.index');
-    Route::resource('packages', PackageController::class);
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
+Route::middleware('auth')->group(function () {
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::resource('bookings', BookingController::class);
 
@@ -22,6 +23,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+Route::get('/packages', [PackageController::class, 'index'])->name('packages.index');
+Route::resource('packages', PackageController::class);
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');

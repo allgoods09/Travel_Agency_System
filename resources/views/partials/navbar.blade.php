@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-gradient-travel shadow-sm fixed-top">
-    <div class="container-fluid px-4"> {{-- widened container for more edge space --}}
+    <div class="container-fluid px-4">
         <a class="navbar-brand fw-bold text-white fs-3" href="{{ url('/') }}">
             ✈️ TravelBohol
         </a>
@@ -15,10 +15,10 @@
                     <a class="nav-link text-white fw-semibold {{ request()->is('/') ? 'active-link' : '' }}" href="{{ url('/') }}">Home</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-semibold {{ request()->is('packages*') ? 'active-link' : '' }}" href="{{ url('/packages') }}">Packages</a>
+                </li>
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link text-white fw-semibold {{ request()->is('packages*') ? 'active-link' : '' }}" href="{{ url('/packages') }}">Packages</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-white fw-semibold {{ request()->is('customers*') ? 'active-link' : '' }}" href="{{ url('/customers') }}">Customers</a>
                     </li>
@@ -26,6 +26,10 @@
                         <a class="nav-link text-white fw-semibold {{ request()->is('bookings*') ? 'active-link' : '' }}" href="{{ url('/bookings') }}">Booking</a>
                     </li>
                 @endauth
+
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-semibold {{ request()->is('about*') ? 'active-link' : '' }}" href="{{ url('/about') }}">About</a>
+                </li>
             </ul>
 
             {{-- Right-side Auth Buttons --}}
@@ -38,21 +42,43 @@
                         <a href="{{ route('register') }}" class="btn btn-light text-primary btn-sm px-3">Sign Up</a>
                     </li>
                 @else
-                    <li class="nav-item d-flex align-items-center gap-3">
-                        {{-- Profile circle with first initial --}}
+                    <li class="nav-item d-flex align-items-center gap-3 position-relative">
+                        {{-- Profile circle --}}
                         <div class="bg-primary text-white fw-bold rounded-circle d-flex justify-content-center align-items-center"
                             style="width: 38px; height: 38px; font-size: 1.1rem; box-shadow: 0 0 10px rgba(255,255,255,0.2);">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
 
-                        {{-- Logout button --}}
+                        {{-- Menu toggle (rectangle button with rounded edges) --}}
+                        <button class="btn btn-outline-light btn-sm px-3 py-1 fw-semibold rounded-pill d-flex align-items-center gap-2"
+                            id="menuToggle" type="button">
+                            <i class="bi bi-list" style="font-size: 1.2rem;"></i>
+                        </button>
+
+                        {{-- Dropdown menu --}}
+                        <div id="userMenu" class="dropdown-menu dropdown-menu-end shadow-lg rounded-4 mt-2"
+                            style="display: none; position: absolute; top: 100%; right: 0; min-width: 180px;">
+                            <p class="dropdown-item fw-semibold" >⚙️ Settings</p>
+                            <p class="dropdown-item fw-semibold" >🎨 Customize Profile</p>
+                            <div class="dropdown-divider"></div>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" onsubmit="return confirmLogout()">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger fw-semibold">🚪 Log Out</button>
+                            </form>
+                        </div>
+                    </li>
+                    {{-- <li class="nav-item d-flex align-items-center gap-3">
+                        <div class="bg-primary text-white fw-bold rounded-circle d-flex justify-content-center align-items-center"
+                            style="width: 38px; height: 38px; font-size: 1.1rem; box-shadow: 0 0 10px rgba(255,255,255,0.2);">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="m-0" onsubmit="return confirmLogout()">
                             @csrf
                             <button type="submit" class="btn btn-danger btn-sm px-3 shadow-sm">
                                 Logout
                             </button>
                         </form>
-                    </li>
+                    </li> --}}
                 @endguest
             </ul>
 
@@ -63,6 +89,23 @@
 <script>
     function confirmLogout() {
         return confirm('Are you sure you want to log out?');
+    }
+
+    const menuToggle = document.getElementById('menuToggle');
+    const userMenu = document.getElementById('userMenu');
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.style.display = 'none';
+            }
+        });
     }
 </script>
 

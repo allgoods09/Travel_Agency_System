@@ -81,14 +81,31 @@
 
 .pagination .page-link {
     color: #0083b0;
-    border-radius: 50%;
-    margin: 0 3px;
+    border-radius: 30px;
+    padding: 6px 14px;
+    font-weight: 600;
+    border: 2px solid #00b4db;
+    margin: 0 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination .page-link:hover {
+    background-color: #00b4db;
+    color: #fff;
+    transform: translateY(-2px);
 }
 
 .pagination .active .page-link {
-    background-color: #00b4db;
-    border-color: #00b4db;
+    background-color: #0083b0;
+    border-color: #0083b0;
     color: white;
+    box-shadow: 0 0 8px rgba(0, 131, 176, 0.4);
 }
+.pagination-summary,
+small.text-muted,
+div[data-paginator-summary] {
+    display: none !important;
+}
+
 </style>
 </html>

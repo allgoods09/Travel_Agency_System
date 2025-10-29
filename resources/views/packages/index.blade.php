@@ -7,7 +7,9 @@
         <div class="page-header">
             <h1 class="h3 mb-0">🎒 Packages List</h1>
         </div>
-        <a href="#" class="btn btn-primary mb-3" onclick="openAddPackageModal()">Add Package</a>
+        @auth
+            <a href="#" class="btn btn-primary mb-3" onclick="openAddPackageModal()">Add Package</a>
+        @endauth
     </div>
 
     @if($packages->isEmpty())
@@ -22,7 +24,10 @@
                         <th>Destination</th>
                         <th>Price</th>
                         <th>Duration (Days)</th>
-                        <th>Actions</th>
+                        @auth
+                            <th>Actions</th>
+                        @endauth
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -33,24 +38,26 @@
                             <td>{{ $package->destination }}</td>
                             <td>₱{{ number_format($package->price, 2) }}</td>
                             <td>{{ $package->duration_days }}</td>
-                            <td>
-                                <button 
-                                    class="btn btn-sm btn-warning me-2"
-                                    onclick="openEditModal({{ $package->id }}, '{{ $package->name }}', '{{ $package->destination }}', '{{ $package->price }}', '{{ $package->duration_days }}')">
-                                    Edit
-                                </button>
-
-                                <form action="{{ route('packages.destroy', $package->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
+                            @auth
+                                <td>
                                     <button 
-                                        type="submit" 
-                                        class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Are you sure you want to delete this package?')">
-                                        Delete
+                                        class="btn btn-sm btn-warning me-2"
+                                        onclick="openEditModal({{ $package->id }}, '{{ $package->name }}', '{{ $package->destination }}', '{{ $package->price }}', '{{ $package->duration_days }}')">
+                                        Edit
                                     </button>
-                                </form>
-                            </td>
+
+                                    <form action="{{ route('packages.destroy', $package->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button 
+                                            type="submit" 
+                                            class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this package?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            @endauth
                         </tr>
                     @endforeach
                 </tbody>
